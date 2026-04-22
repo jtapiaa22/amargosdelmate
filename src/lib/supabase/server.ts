@@ -1,6 +1,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+/**
+ * Cliente de Supabase para Server Components, Server Actions y Route Handlers.
+ * Maneja cookies automáticamente para mantener la sesión.
+ */
 export async function createClient() {
   const cookieStore = await cookies()
 
@@ -18,7 +22,7 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             )
           } catch {
-            // Server Component — se ignora si no se puede setear
+            // En Server Components no se puede setear cookies — se ignora
           }
         },
       },

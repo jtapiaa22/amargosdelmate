@@ -1,3 +1,7 @@
+/* =============================================
+ * Tipos del modelo de datos — Amargos del Mate
+ * ============================================= */
+
 export type Categoria = {
   id: number
   nombre: string

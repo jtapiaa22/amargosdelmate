@@ -2,8 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import Vitrina from '@/components/vitrina/Vitrina'
 import type { Categoria, Producto } from '@/types'
 
-export const revalidate = 60 // revalida la página cada 60 segundos (ISR)
-
 export default async function Home() {
   const supabase = await createClient()
 
@@ -17,18 +15,22 @@ export default async function Home() {
   // Traer productos activos con su categoría
   const { data: productos, error: errorProds } = await supabase
     .from('productos')
-    .select(`
+    .select(
+      `
       *,
       categoria:categorias (
         id, nombre, slug, orden, activa
       )
-    `)
+    `
+    )
     .eq('activo', true)
     .order('orden', { ascending: true })
 
   // Log en consola del servidor si algo falla (no rompe la UI)
-  if (errorCats) console.error('[Vitrina] Error al traer categorías:', errorCats.message)
-  if (errorProds) console.error('[Vitrina] Error al traer productos:', errorProds.message)
+  if (errorCats)
+    console.error('[Vitrina] Error al traer categorías:', errorCats.message)
+  if (errorProds)
+    console.error('[Vitrina] Error al traer productos:', errorProds.message)
 
   return (
     <Vitrina
